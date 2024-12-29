@@ -1,0 +1,27 @@
+set(srcs
+    "Agent.h" "Agent.cpp"
+)
+
+idf_component_register(SRCS "RemoteControlMain.cpp" "${srcs}"
+                    REQUIRES freertos spiffs nvs_flash json mbedtls esp_eth driver lwip cima-system
+) 
+
+enable_language(CXX)
+set(CMAKE_CXX_STANDARD 20)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+set(CMAKE_CXX_EXTENSIONS ON)
+
+component_compile_definitions(CORE_DEBUG_LEVEL=4)
+
+# Boost
+if(Boost_FOUND)
+    include_directories(${Boost_INCLUDE_DIRS})
+endif()
+
+spiffs_create_partition_image(storage ../filesystem FLASH_IN_PROJECT)
+
+#set(COMPONENT_REQUIRES spiffs nvs_flash json mbedtls port esp_eth driver lwip)
+#set(COMPONENT_PRIV_REQUIRES )
+
+#set(COMPONENT_SRCS "${srcs}")
+#set(COMPONENT_ADD_INCLUDEDIRS "")
