@@ -37,6 +37,10 @@ extern "C" void app_main(void) {
         agent.cat("/spiffs/sheep.txt");
     }
 
+    buttonController.initButton();
+    buttonController.addHandler([&](){ logger.info("Button pressed."); });
+    agent.registerToMainLoop([&](){ buttonController.handleClicks(); });
+
     agent.registerToMainLoop([&](){ 
         if( ! limiter.canExecute()) {
             return;
